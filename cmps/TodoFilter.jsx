@@ -7,7 +7,7 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
     useEffect(() => {
         // Notify parent
         onSetFilterBy(filterByToEdit)
-    }, [filterByToEdit])
+    }, [filterByToEdit,onSetFilterBy])
 
     function handleChange({ target }) {
         const field = target.name
@@ -40,16 +40,38 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
         <section className="todo-filter">
             <h2>Filter Todos</h2>
             <form onSubmit={onSubmitFilter}>
-                <input value={txt} onChange={handleChange}
-                    type="search" placeholder="By Txt" id="txt" name="txt"
+                <input
+                    value={txt}
+                    onChange={handleChange}
+                    type="search"
+                    placeholder="By Txt"
+                    id="txt"
+                    name="txt"
                 />
                 <label htmlFor="importance">Importance: </label>
-                <input value={importance} onChange={handleChange}
-                    type="number" placeholder="By Importance" id="importance" name="importance"
+                <input
+                    value={importance}
+                    onChange={handleChange}
+                    type="number"
+                    placeholder="By Importance"
+                    id="importance"
+                    name="importance"
                 />
 
-                <button hidden>Set Filter</button>
+                <label htmlFor="status">Status: </label>
+                <select
+                    id="status"
+                    name="status"
+                    value={filterByToEdit.status || 'all'}
+                    onChange={handleChange}
+                >
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="done">Done</option>
+                </select>
+
+                <button type="submit">Set Filter</button>
             </form>
         </section>
-    )
+    );
 }

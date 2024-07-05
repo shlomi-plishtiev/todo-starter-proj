@@ -12,9 +12,10 @@ import { AboutTeam } from "./cmps/AboutTeam.jsx"
 import { AboutVision } from "./cmps/AboutVision.jsx"
 import { Dashboard } from "./pages/Dashboard.jsx"
 import { store } from "./store/store.js"
+import { UserDetails } from "./cmps/UserDetails.jsx"
+import { AppFooter } from './cmps/AppFooter.jsx';
 
 export function RootCmp() {
-
     return (
         <Provider store={store}>
             <Router>
@@ -32,11 +33,12 @@ export function RootCmp() {
                             <Route path="/todo/edit" element={<TodoEdit />} />
                             <Route path="/todo" element={<TodoIndex />} />
                             <Route path="/dashboard" element={<Dashboard />} />
-
+                            <Route path="/user-details/:userId" element={<UserDetails />} />
                         </Routes>
                     </main>
+                    <AppFooter />
                 </section>
             </Router>
         </Provider>
-    )
+    );
 }

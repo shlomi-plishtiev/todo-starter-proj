@@ -18,6 +18,24 @@
     display: flex;
     gap: 15px;
 }
+.app-nav-dashboard:hover {
+ color: brown;
+}
+.app-nav-home:hover {
+ color: brown;
+}
+.app-nav-about:hover {
+ color: brown;
+}
+.app-nav-todo:hover {
+ color: brown;
+}
+.user-name:hover {
+    color: rgb(241, 212, 241);
+}
+.user-name {
+    color: rgba(134, 24, 24, 0.884);
+}
 
 
 a.active {

@@ -3,26 +3,21 @@ import { TodoList } from "../cmps/TodoList.jsx"
 import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
-import { REMOVE_TODO, SET_TODOS, store } from "../store/store.js"
-import { loadTodos, removeTodo } from "./actions/todo.actions.js"
+import { loadTodos, removeTodo, toggleTodo } from "../store/actions/todo.actions.js"
 
-const { useSelector, useDispatch } = ReactRedux
+const { useSelector } = ReactRedux
 const { useState, useEffect } = React
 const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
-
-    const [_todos, setTodos] = useState(null)
+    const [_todos, setTodos] = useState({})
     const todos = useSelector(storeState => storeState.todos)
     const isLoading = useSelector(storeState => storeState.isLoading)
+    const [filterBy, setFilterBy] = useState(todoService.getFilterFromSearchParams(useSearchParams()[0]))
 
 
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
-
-    const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
-
-    const [filterBy, setFilterBy] = useState(defaultFilter)
 
     useEffect(() => {
         setSearchParams(filterBy)
@@ -43,17 +38,16 @@ export function TodoIndex() {
     }
 
     function onToggleTodo(todo) {
-        const todoToSave = { ...todo, isDone: !todo.isDone }
-        todoService.save(todoToSave)
-            .then((savedTodo) => {
-                setTodos(prevTodos => prevTodos.map(currTodo => (currTodo._id !== todo._id) ? currTodo : { ...savedTodo }))
-                showSuccessMsg(`Todo is ${(savedTodo.isDone) ? 'done' : 'back on your list'}`)
+        toggleTodo(todo)
+            .then(savedTodo => {
+                showSuccessMsg(`Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`)
             })
             .catch(err => {
                 console.log('err:', err)
-                showErrorMsg('Cannot toggle todo ' + todoId)
+                showErrorMsg('Cannot toggle todo ' + todo._id)
             })
     }
+    
 
     if (!todos) return <div>Loading...</div>
     return (
